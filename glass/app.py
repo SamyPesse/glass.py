@@ -3,8 +3,10 @@ from flask import Flask
 class Application(object):
 
 	def __init__(self, 
+				name="",
 				client_id=None,
 				client_secret=None):
+		self.name = name
 		self.server = Flask()
 
 
