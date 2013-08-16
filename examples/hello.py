@@ -11,9 +11,7 @@ app = glass.Application(
 @app.login
 def login(user):
 	print "user : %s" % user.token
-	user.timeline.post({
-		"text": "Hello World!"
-	})
+	user.timeline.post(text="Hello World!")
 
 if __name__ == '__main__':
     app.run()

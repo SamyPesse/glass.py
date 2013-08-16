@@ -1,3 +1,4 @@
+from timeline import Timeline
 
 class User(object):
 	"""
@@ -7,3 +8,4 @@ class User(object):
 	def __init__(self, app, token):
 		self.app = app
 		self.token = token
+		self.timeline = Timeline(self)

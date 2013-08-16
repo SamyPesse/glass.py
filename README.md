@@ -27,9 +27,7 @@ app = glass.Application(
 @app.login
 def login(user):
 	print "user : %s" % user.token
-	user.timeline.post({
-		"text": "Hello World!"
-	})
+	user.timeline.post(text="Hello World!")
 
 if __name__ == '__main__':
     app.run(port=5000)
@@ -47,18 +45,13 @@ app.run(port=5000)
 Post html cards
 
 ```python
-user.timeline.post({
-	html: "Hello <b>World</b>"
-})
+user.timeline.post(html="Hello <b>World</b>")
 ```
 
 Post html templates, templates are processed using Jinja2 template engine.
 
 ```python
-user.timeline.post_template("message.html", {
-	author: "Aaron",
-	content: "Hey, How are you ?"
-})
+user.timeline.post_template("message.html", author="Aaron", content="Hey, How are you ?")
 ```
 
 #### Subscribe to actions
@@ -69,9 +62,7 @@ Subscribe to an action "REPLY" :
 @app.action("REPLY")
 def reply(user):
 	print "User %s reply" % user.token
-	user.timeline.post({
-		"text": "Thank you!"
-	})
+	user.timeline.post(text="Thank you!")
 ```
 
 
