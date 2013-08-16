@@ -1,9 +1,13 @@
 glass.py
 ========
 
-A simple library for building and testing Google Glass applications in Python using Mirror API.
+[![Code Now](https://friendco.de/widgets/image/codenow?url=https%3A%2F%2Fgithub.com%2FSamyPesse%2Fglass.py.git)](https://friendco.de/widgets/url/codenow?url=https%3A%2F%2Fgithub.com%2FSamyPesse%2Fglass.py.git)
 
-## About this project
+A simple but powerful library for building and testing Google Glass applications in Python using Mirror API.
+
+Glass.py uses Flask, Requests and Rauth.
+
+I started this project for testing devellopement of applications for Glass using Mirror API but i'm not part of Explorer Program, so this library contains an emulator.
 
 
 ## Features
@@ -23,6 +27,14 @@ Clone this repository :
 Install dependencies :
 
 	pip install -r requirements.txt
+
+Install the library (maybe need to be sudo) :
+
+	pip install .
+
+## Test an Hello World with the emulator
+
+	python examples/hello.py
 
 ## Example Usage
 
@@ -56,10 +68,11 @@ Google Glass mirror API uses oAuth for authorizing an application to connect to 
 3. Click **API Access** and create an OAuth 2.0 client ID for a web application.
 4. Specify the product name and icon for your Application. These fields appear on the OAuth grant screen presented to your users.
 5. Select **Web application** and specify any value for the hostname, such as localhost
-6. Click **Edit settings**... for the client ID to specify redirect URIs. Specify **http://localhost:8080/glass/oauth/callback**
+6. Click **Edit settings**... for the client ID to specify redirect URIs. Specify :
+	* **http://localhost:8080/glass/oauth/callback**
 7. Make note of the client ID and secret from the Google APIs Console. You'll need it to configure your application.
 
-For authorizing the application to connect to your glasses, access the page : **http://localhost:8080/glass/oauth/authorize**
+For authorizing the application to connect to your glasses, access the page : http://localhost:8080/glass/oauth/authorize
 If you don't have Glass as part of the Explorer Program, use the emulator.
 
 #### Emulator

@@ -10,11 +10,12 @@ class Application(object):
     OAUTH_ACCESS_TOKEN_URL = "https://accounts.google.com/o/oauth2/token"
     OAUTH_AUTHORIZE_URL = "https://accounts.google.com/o/oauth2/auth"
     OAUTH_REDIRECT_URI = "authentification/google"
-    OAUTH_API_BASE_URL = "https://www.googleapis.com/oauth2/v1/"
-    OAUTH_SCOPES = (
-        'https://www.googleapis.com/auth/userinfo.profile '
-        'https://www.googleapis.com/auth/userinfo.email '
-    )
+    OAUTH_API_BASE_URL = "https://www.googleapis.com/"
+    OAUTH_SCOPES = [
+        'https://www.googleapis.com/auth/glass.timeline',
+        'https://www.googleapis.com/auth/userinfo.profile',
+        'https://www.googleapis.com/auth/userinfo.email'
+    ]
 
     def __init__(self, 
                 name="",
@@ -68,6 +69,14 @@ class Application(object):
         self.add_endpoint("login", f)
         return f
 
+    def action(self, action, **options):
+        """
+        A decorator that is used to register a function for an user action
+        """
+        def decorator(f):
+            self.add_endpoint("action.%s" % action, f)
+        return decorator
+
     @property
     def oauth_redirect_uri(self):
         return "http://%s/glass/oauth/callback" % (self.host)
@@ -78,7 +87,7 @@ class Application(object):
         """
         params = {
             'approval_prompt': 'force',
-            'scope': self.OAUTH_SCOPES,
+            'scope': " ".join(self.OAUTH_SCOPES),
             'state': '/profile',
             'redirect_uri': self.oauth_redirect_uri,
             'response_type': 'code'
