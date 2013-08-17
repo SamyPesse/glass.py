@@ -31,3 +31,17 @@ class User(object):
         or not "name" in profile):
             raise Exception("Invalid user profile")
         return profile
+
+    def location(self, lid="latest"):
+        """
+        Return the last known location or a specific location
+
+        :param lid: location id ("latest" for the last known location)
+        """
+        location = self.session.get("mirror/v1/locations/%s" % (lid)).json()
+        
+        if (location is None
+        or not "latitude" in location
+        or not "longitude" in location):
+            raise Exception("Invalid user location")
+        return location

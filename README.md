@@ -61,16 +61,8 @@ if __name__ == '__main__':
 
 #### oAuth
 
-Google Glass mirror API uses oAuth for authorizing an application to connect to the glasses.
-
-1. Go to the [Google APIs console](https://code.google.com/apis/console/) and create a new API project.
-2. Click Services and enable the Google Mirror API for your new project. The API is only available to developers who have Glass as part of the Explorer Program, so if it's not available for you, just pass this step.
-3. Click **API Access** and create an OAuth 2.0 client ID for a web application.
-4. Specify the product name and icon for your Application. These fields appear on the OAuth grant screen presented to your users.
-5. Select **Web application** and specify any value for the hostname, such as localhost
-6. Click **Edit settings**... for the client ID to specify redirect URIs. Specify :
-	* **http://localhost:8080/glass/oauth/callback**
-7. Make note of the client ID and secret from the Google APIs Console. You'll need it to configure your application.
+Google Glass mirror API uses oAuth for authorizing an application to connect to the glasses. Go to the [Google APIs console](https://code.google.com/apis/console/) and create a new API project. Enable the Google Mirror API for your new project. The API is only available to developers who have Glass as part of the Explorer Program, so if it's not available for you, just pass this step.
+Specify *http://localhost:8080/glass/oauth/callback* as callback url.
 
 For authorizing the application to connect to your glasses, access the page : http://localhost:8080/glass/oauth/authorize
 If you don't have Glass as part of the Explorer Program, use the emulator.
@@ -86,7 +78,13 @@ app.run(port=8080)
 
 #### Insert Cards in timeline
 
-Post HTML cards.
+Post text cards :
+
+```python
+user.timeline.post(text="Hello World!")
+```
+
+Post HTML cards :
 
 ```python
 user.timeline.post(html="Hello <b>World</b>")
@@ -116,13 +114,49 @@ def reply(user):
 	user.timeline.post(text="Thank you!")
 ```
 
-A new location is available for the current user:
+A new location is available for the current user, At this time, location notifications are sent every 10 minutes :
 
 ```python
 @app.subscriptions.location
 def change_location(user):
 	print "User %s change location" % user.token
 	user.timeline.post(text="You move !")
+```
+
+Access the user last known location using :
+
+```python
+@app.subscriptions.location
+def change_location(user):
+	# Gte last known location
+	location = user.location()
+
+	# Post card with location infos
+	user.timeline.post(text="You move to (Lat: %s, Long: %s) (Accuracy: %s meters)" % (
+		location.get('latitude'),
+		location.get('longitude'),
+		location.get('accuracy')
+	))
+```
+
+#### Get user informations
+
+Get profile data using :
+
+```python
+profile = user.profile()
+print "Hello %s" % (profile.get("given_name"))
+```
+
+Get last known user location :
+
+```python
+location = user.location()
+print "User is at (Lat: %s, Long: %s) (Accuracy: %s meters)" % (
+		location.get('latitude'),
+		location.get('longitude'),
+		location.get('accuracy')
+	)
 ```
 
 #### Accessing the Flask web server

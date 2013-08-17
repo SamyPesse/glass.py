@@ -14,6 +14,7 @@ class Application(object):
     OAUTH_REDIRECT_URI = "authentification/google"
     OAUTH_API_BASE_URL = "https://www.googleapis.com/"
     OAUTH_SCOPES = [
+        'https://www.googleapis.com/auth/glass.location',
         'https://www.googleapis.com/auth/glass.timeline',
         'https://www.googleapis.com/auth/userinfo.profile',
         'https://www.googleapis.com/auth/userinfo.email'
