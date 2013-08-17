@@ -19,13 +19,11 @@ setup(name="glass.py",
     description="",
     keywords='',
     version="0.0.1",
-    url='git+ssh://git@friendco.de/opt/git/SamyPesse/glass.py.git',
+    url='https://github.com/SamyPesse/glass.py.git',
     license='Apache',
     author="Samy Pesse",
     author_email='samypesse@gmail.com',
-    long_description="""
-    Views & Urls for friendcode
-    """,
+    long_description="""""",
     packages=[
         "glass"
     ],
