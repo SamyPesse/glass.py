@@ -5,6 +5,7 @@ import json
 
 # Local imports
 from user import User
+from subscriptions import Subscriptions
 
 class Application(object):
     OAUTH_ACCESS_TOKEN_URL = "https://accounts.google.com/o/oauth2/token"
@@ -22,13 +23,15 @@ class Application(object):
                 client_id=None,
                 client_secret=None,
                 emulator=False,
-                debug=True):
+                debug=True,
+                template_folder='templates'):
         self.name = name
         self.emulator = emulator
         self.debug = debug
         self.web = flask.Flask(self.name)
+        self.template_folder = template_folder
         self.logger = self.web.logger
-        self.endpoints = {}
+        self.subscriptions = Subscriptions(app=self)
         self.oauth = rauth.OAuth2Service(name=self.name,
                                   client_id=client_id,
                                   client_secret=client_secret,
@@ -36,50 +39,9 @@ class Application(object):
                                   authorize_url=self.OAUTH_AUTHORIZE_URL,
                                   base_url=self.OAUTH_API_BASE_URL)
 
-
-    def add_endpoint(self, endpoint, callback):
-        """
-        Add a function to an endpoint
-
-        :param endpoint: the endpoint name (ex: "login")
-        :param callback: the endpoint callback to add 
-        """
-        if not endpoint in self.endpoints:
-            self.endpoints[endpoint] = []
-        self.logger.debug("Add callback to endpoint %s" % endpoint)
-        self.endpoints[endpoint].append(callback)
-
-    def call_endpoint(self, endpoint, *args, **kwargs):
-        """
-        Call callbacks for and endpoint
-
-        :param endpoint: the endpoint name (ex: "login")
-        :param *args, **kwargs: params for the callback
-        """
-        if not endpoint in self.endpoints:
-            self.endpoints[endpoint] = []
-        self.logger.debug("Call endpoint %s" % endpoint)
-        for callback in self.endpoints[endpoint]:
-            callback(*args, **kwargs)
-
-    def login(self, f):
-        """
-        A decorator that is used to register a function for when an user login
-        """
-        self.add_endpoint("login", f)
-        return f
-
-    def action(self, action, **options):
-        """
-        A decorator that is used to register a function for an user action
-        """
-        def decorator(f):
-            self.add_endpoint("action.%s" % action, f)
-        return decorator
-
     @property
     def oauth_redirect_uri(self):
-        return "http://%s/glass/oauth/callback" % (self.host)
+        return "%s/glass/oauth/callback" % (self.host)
 
     def _oauth_authorize(self):
         """
@@ -105,10 +67,16 @@ class Application(object):
             'grant_type': 'authorization_code'
         }, decoder=json.loads)
         user = User(token=token, app=self)
-        self.call_endpoint("login", user)
+
+        # Add subscriptions
+        self.subscriptions.init_user(user)
+
+        # Call endpoint for user login
+        self.subscriptions.call_endpoint("login", user)
+
         return token
 
-    def run(self, host="localhost", port=8080, debug=None):
+    def run(self, host="http://localhost", port=8080, debug=None):
         """
         Start the application server
         """
@@ -125,6 +93,8 @@ class Application(object):
         self.web.add_url_rule('/glass/oauth/callback', 'oauth_callback', self._oauth_callback)
 
         self.web.debug = debug or self.debug
+
+        # Run webserver
         self.web.run(port=self.port)
 
 

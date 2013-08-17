@@ -15,6 +15,10 @@ class User(object):
         self.session = self.app.oauth.get_session(token=self.token)
         self.timeline = Timeline(self)
 
+    @property
+    def emulator(self):
+        return self.token == "emulator"
+
     def profile(self):
         """
         Return profile informations about this user

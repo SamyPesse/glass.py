@@ -50,7 +50,7 @@ app = glass.Application(
 	client_id="",
 	client_secret="")
 
-@app.login
+@app.subscriptions.login
 def login(user):
 	print "user : %s" % user.token
 	user.timeline.post(text="Hello World!")
@@ -93,9 +93,16 @@ user.timeline.post(html="Hello <b>World</b>")
 ```
 
 Post HTML templates, templates are processed using Jinja2 template engine.
+For templates you can use the full power of Jinja2 templates. Head over to the official [Jinja2 Template Documentation](http://jinja.pocoo.org/2/documentation/templates) for more information.
 
 ```python
 user.timeline.post_template("message.html", author="Aaron", content="Hey, How are you ?")
+```
+
+Define the directory for the templates using :
+
+```python
+app.template_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 ```
 
 #### Subscribe to actions
@@ -103,10 +110,28 @@ user.timeline.post_template("message.html", author="Aaron", content="Hey, How ar
 Subscribe to an action "REPLY" :
 
 ```python
-@app.action("REPLY")
+@app.subscriptions.action("REPLY")
 def reply(user):
 	print "User %s reply" % user.token
 	user.timeline.post(text="Thank you!")
 ```
 
+A new location is available for the current user:
+
+```python
+@app.subscriptions.location
+def change_location(user):
+	print "User %s change location" % user.token
+	user.timeline.post(text="You move !")
+```
+
+#### Accessing the Flask web server
+
+You can access the flask applciation for adding views (like index, about pages, ...) using :
+
+```python
+@app.web.route("/")
+def index():
+	return "Welcome on my Glass Application website !"
+```
 
