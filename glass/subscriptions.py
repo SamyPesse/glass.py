@@ -19,7 +19,7 @@ class Subscriptions(object):
         self.endpoints = {}    # map of endpoint -> callback function
         self.tokens = {} # map of userToken -> access token
 
-    def add_subscription(self, collection, operations):
+    def add_subscription(self, collection, operations=[]):
         """
         Add a subscription for glasses
 
@@ -121,6 +121,14 @@ class Subscriptions(object):
         A decorator that is used to register a function for when an user login
         """
         self.add_endpoint("login", f)
+        return f
+
+    def location(self, f):
+        """
+        A decorator that is used to register a function for when an user location changed
+        """
+        self.add_subscription("locations")
+        self.add_endpoint("location", f)
         return f
 
     def action(self, action, **options):
