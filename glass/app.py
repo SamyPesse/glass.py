@@ -6,6 +6,7 @@ import os
 
 # Local imports
 from user import User
+from emulator import Emulator
 from subscriptions import Subscriptions
 
 class Application(object):
@@ -35,6 +36,7 @@ class Application(object):
             static_url_path='/emulator')
         self.template_folder = template_folder
         self.logger = self.web.logger
+        self.emulator_service = Emulator(app=self)
         self.subscriptions = Subscriptions(app=self)
         self.oauth = rauth.OAuth2Service(name=self.name,
                                   client_id=client_id,
@@ -85,7 +87,7 @@ class Application(object):
         Start the application server
         """
         if self.emulator:
-            pass
+            self.emulator_service.run()
 
         self.port = port
         self.host = host

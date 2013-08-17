@@ -9,7 +9,7 @@ class Timeline(object):
 
     Post to timeline using : timeline.post
     examples :
-    	timeline.post(text="Hello World")
+        timeline.post(text="Hello World")
     """
 
     def __init__(self, user):
@@ -24,7 +24,8 @@ class Timeline(object):
         :param html : html content for the card
         """
         if self.user.emulator:
-        	return None
+            self.app.emulator_service.post_card(kwargs)
+            return None
         
         # Not emulator
         card = self.user.session.post("/mirror/v1/timeline", data=json.dumps(kwargs)).json()
@@ -34,14 +35,14 @@ class Timeline(object):
         return card
 
     def post_template(self, template, **kwargs):
-    	"""
-    	Post a card with an html template
+        """
+        Post a card with an html template
 
-    	:param template: name of the template
-    	"""
-    	path = os.path.join(self.app.template_folder, template)
-    	with open(path, "r") as templatefile:
-	    	template = Template(templatefile.read())
-	    	output = template.render(**kwargs)
-	    	print "template : %s" % output
-    		return self.post(html=output)
+        :param template: name of the template
+        """
+        path = os.path.join(self.app.template_folder, template)
+        with open(path, "r") as templatefile:
+            template = Template(templatefile.read())
+            output = template.render(**kwargs)
+            print "template : %s" % output
+            return self.post(html=output)
