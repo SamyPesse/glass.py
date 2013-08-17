@@ -1,7 +1,12 @@
 # Python imports
 import hashlib
 import json
+import flask
 from uuid import uuid4
+
+# Local imports
+from user import User
+
 
 class Subscriptions(object):
     """
@@ -30,11 +35,28 @@ class Subscriptions(object):
         subscription_id = m.hexdigest()
         if subscription_id in self.subscriptions:
             return False
+
+        # Add subscription to map
         self.subscriptions[subscription_id] = {
             "id": subscription_id,
             "collection": collection,
             "operations": operations
         }
+
+        # Add view for subscription
+        def handler():
+            data = json.loads(request.data)
+            userid = data["userToken"]
+            if not userid in self.tokens:
+                raise Exception("Callback for a non-existant user")
+            user = User(app=self.app, token=self.tokens[userid])
+            if data["collection"] == "timeline":
+                for action in data["actions"]:
+                    self.call_endpoint("action."+action["type"], user)
+            elif data["collection"] == "locations":
+                self.call_endpoint("location", user)
+
+        self.app.web.add_url_rule('/glass/callback/%s' % subscription_id, 'callback_%s' % subscription_id, handler)
 
 
     def add_endpoint(self, endpoint, callback):

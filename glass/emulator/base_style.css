@@ -1,3 +1,14 @@
+/* Styling for wrapper (not part of the card content) */
+.card {
+  width: 640px;
+  height: 360px;
+  background-color: black;
+}
+
+#map-time-footer {
+  left: 320px;
+}
+
 /*--------------------------------------- */
 /* RESET */
 * {
@@ -15,40 +26,16 @@
 article {
   width: 640px;
   height: 360px;
-  display: block;
   overflow: hidden;
-
-  position: absolute;
-  top: 0px;
-  left: 0px;
+  position: relative;
 
   background-color: #000;
   color: #fff;
 
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: 100;
   font-size: 40px;
   text-shadow: 0 1px 1px #000;
-}
-
-/* Modifications to allow content to flow across pages. */
-article.auto-paginate {
-  overflow: visible;
-
-  /* Keeps contents 40px from the top/bottom of the screen. */
-  height: 280px;
-  padding: 40px 0px;
-
-  /* Actually causes the pagination. */
-  -webkit-column-width: 640px;
-  -webkit-column-gap: 0px;
-  -webkit-column-rule: 0px solid #000;
-}
-
-/* Keeps content of pages 40px away from the left/right edges of the screen. */
-article.auto-paginate > * {
-  margin-left: 40px;
-  margin-right: 40px;
 }
 
 /* Main content area, excluding footer. */
@@ -63,16 +50,9 @@ section {
   overflow: hidden;
 }
 
-/* Remove margin on top and bottom for sections that are inside
-   auto-paginating articles. */
-article.auto-paginate > section {
-  margin-top: 40px;
-  margin-bottom: 40px;
-}
-
 /* Footer containing timestamp, auxiliary info. */
 footer {
-  margin: 0 40px 26px 40px;
+  margin: 0 40px 27px 40px;
   position: absolute;
   left: 0;
   right: 0;
@@ -83,8 +63,6 @@ footer {
   font-size: 26px;
   line-height: 1.4em;
   overflow: hidden;
-  text-overflow:ellipsis;
-  white-space: nowrap;
 }
 
 /* Force footer content to be single-line, ellipsized. */
@@ -185,7 +163,6 @@ section > ul:last-child li:last-child, ol:last-child li:last-child {
 
 table {
   width: 100%;
-  max-width: 560px;
   border-collapse: collapse;
   border-spacing: 0;
 }
@@ -193,7 +170,6 @@ table {
 tr {
   border-bottom: 1px solid #333;
   padding: 0;
-  max-width: 560px;
 }
 
 tr:last-child {
@@ -209,7 +185,6 @@ td {
   padding: 12px 0.4em;
   overflow: hidden;
   vertical-align: baseline;
-  max-width: 560px;
 }
 
 td:first-child {
@@ -371,7 +346,6 @@ sub {
 .text-auto-size {
   width: 100%;
   height: 100%;
-  visibility: hidden;
 }
 
 /* Forces text onto a single line, ellipsized at the end. */
@@ -478,14 +452,6 @@ footer [class^="layout-"] > div {
 }
 
 
-/*---------------------------------------
-/* ANSWER CARD METADATA */
-
-.gls-ma, .gls-tts {
-  display: none;
-}
-
-
 /*--------------------------------------- */
 /* Default template styling */
 
@@ -580,49 +546,4 @@ article.photo section img.left {
 
 article.photo section img.right {
   margin-left: 10px;
-}
-
-/*--------------------------------------- */
-/* Hide all pages except first one. Lets us render first page without involving
-   Javascript. */
-
-article {
-  visibility: hidden;
-}
-
-article:first-of-type {
-  visibility: visible;
-}
-
-/* Overlay gradient to allow text to be read over the image. */
-/* for hybrid templates & those needing more bottom readability */
-div.overlay-gradient-tall {
-  display: block;
-  position: absolute;
-  top: 30%;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: -webkit-linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.8));
-}
-
-/* photos, videos, people */
-div.overlay-gradient-medium {
-  display: block;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: -webkit-linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.8));
-}
-
-div.overlay-gradient-short {
-  display: block;
-  position: absolute;
-  top: 70%;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: -webkit-linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.6));
 }

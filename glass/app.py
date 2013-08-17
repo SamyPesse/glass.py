@@ -2,6 +2,7 @@
 import flask
 import rauth
 import json
+import os
 
 # Local imports
 from user import User
@@ -28,7 +29,9 @@ class Application(object):
         self.name = name
         self.emulator = emulator
         self.debug = debug
-        self.web = flask.Flask(self.name)
+        self.web = flask.Flask(self.name,
+            static_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'emulator'),
+            static_url_path='/emulator')
         self.template_folder = template_folder
         self.logger = self.web.logger
         self.subscriptions = Subscriptions(app=self)
