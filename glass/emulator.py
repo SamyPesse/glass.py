@@ -38,6 +38,6 @@ class Emulator(object):
         """
         Start the emulator
         """
-        self.app.web.add_url_rule('/glass/emulator/list/cards/all', 'emulator_list_cards', self._list_cards)
-        self.app.web.add_url_rule('/glass/emulator/list/cards/news', 'emulator_list_cards_news', self._list_cards_news)
+        self.app.web.add_url_rule('/glass/emulator/cards/all', 'emulator_list_cards', self._list_cards)
+        self.app.web.add_url_rule('/glass/emulator/cards/news', 'emulator_list_cards_news', self._list_cards_news)
 

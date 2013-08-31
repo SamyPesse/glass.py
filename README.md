@@ -7,14 +7,14 @@ A simple but powerful library for building and testing Google Glass applications
 
 Glass.py uses Flask, Requests and Rauth.
 
-I started this project for testing devellopement of applications for Glass using Mirror API but i'm not part of Explorer Program, so this library contains an emulator.
+I started this project for testing devellopement of applications for Glass using Mirror API but i'm not part of Explorer Program, so this library will soon contain an emulator.
 
 
 ## Features
 
 * Post cards to timelines
 * Get notification from subscriptions
-* Emulator for testing the application
+* [Coming soon] Emulator for testing the application
 * Built on [Requests](https://github.com/kennethreitz/requests) (v1.x)
 * Built on [Flask](http://flask.pocoo.org/)
 
@@ -69,7 +69,8 @@ If you don't have Glass as part of the Explorer Program, use the emulator.
 
 #### Emulator
 
-Enable the emulator (which will run at localhost:8080/emulator), emulator user can be identified by his token : "emulator"
+Enable the emulator (which will run at localhost:8080/emulator/index.html), emulator user can be identified by his token : "emulator".
+Emulator is not working yet and it's based on https://github.com/Scarygami/mirror-api
 
 ```python
 app.emulator = True
