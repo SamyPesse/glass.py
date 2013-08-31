@@ -129,7 +129,7 @@ Access the user last known location using :
 ```python
 @app.subscriptions.location
 def change_location(user):
-	# Gte last known location
+	# Get last known location
 	location = user.location()
 
 	# Post card with location infos
