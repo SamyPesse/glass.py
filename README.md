@@ -38,6 +38,8 @@ Install the library (maybe need to be sudo) :
 
 ## Example Usage
 
+Full examples available at [master/examples](https://github.com/SamyPesse/glass.py/tree/master/examples).
+
 #### Get started
 
 A simple helloworld which display a message when the user connect the application to his Glasses.
@@ -169,4 +171,3 @@ You can access the flask applciation for adding views (like index, about pages, 
 def index():
 	return "Welcome on my Glass Application website !"
 ```
-
