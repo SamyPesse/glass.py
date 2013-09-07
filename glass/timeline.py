@@ -26,12 +26,18 @@ class Timeline(object):
         if self.user.emulator:
             self.app.emulator_service.post_card(kwargs)
             return None
+
+        # Headers
+        headers = {
+            'Content-Type': 'application/json'
+        }
         
         # Not emulator
-        card = self.user.session.post("/mirror/v1/timeline", data=json.dumps(kwargs)).json()
+        r = self.user.session.post("/mirror/v1/timeline", data=json.dumps(kwargs), headers=headers)
+        card = r.json()
         
         if (card is None or not "id" in card):
-            raise Exception("Error posting card to timeline ", card)
+            raise Exception("Error posting card to timeline ", card, r.request.headers)
         return card
 
     def post_template(self, template, **kwargs):
