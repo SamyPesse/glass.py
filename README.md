@@ -198,19 +198,7 @@ Deletes a contact.
 user.contacts.delete("id_of_the_contact")
 ```
 
-#### Accessing the Flask web server
-
-You can access the flask applciation for adding views (like index, about pages, ...) using :
-
-```python
-@app.web.route("/")
-def index():
-	return "Welcome on my Glass Application website !"
-```
-
-## More features
-
-#### Advanced tieline gestion
+#### Advanced timeline gestion
 
 Retrieves a list of timeline items for the authenticated user.
 
@@ -238,4 +226,14 @@ Deletes a timeline item.
 
 ```python
 user.timeline.delete("id_of_the_card")
+```
+
+#### Accessing the Flask web server
+
+You can access the flask applciation for adding views (like index, about pages, ...) using :
+
+```python
+@app.web.route("/")
+def index():
+	return "Welcome on my Glass Application website !"
 ```
