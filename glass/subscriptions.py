@@ -111,9 +111,7 @@ class Subscriptions(object):
                 "userToken": userUniqueId,
                 "operation": subscription["operations"],
                 "callbackUrl": callback_url
-            }), headers={
-                'Content-Type': 'application/json'
-            }).json()
+            })).json()
             if (result is None or not "id" in result):
                 raise Exception("Error posting subscription ", result)
         return True

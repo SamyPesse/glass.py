@@ -13,6 +13,7 @@ class User(object):
         self.app = app
         self.token = token
         self.session = self.app.oauth.get_session(token=self.token)
+        self.session.headers.update({'Content-Type': 'application/json'})
         self.timeline = Timeline(self)
 
     @property

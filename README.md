@@ -171,3 +171,41 @@ You can access the flask applciation for adding views (like index, about pages, 
 def index():
 	return "Welcome on my Glass Application website !"
 ```
+
+## More features :
+
+#### Listing card in timeline :
+
+Retrieves a list of timeline items for the authenticated user.
+
+```python
+cards = user.timeline.list()
+for card in cards:
+	print "%s :" % (card.get("id")), card
+```
+
+#### Get a card by Id :
+
+Gets a single timeline item by ID.
+
+```python
+card = user.timeline.get("id_of_the_card")
+print "%s :" % (card.get("id")), card
+```
+
+#### Update a card :
+
+Updates a timeline item in place. This method supports patch semantics.
+
+```python
+card = user.timeline.patch("id_of_the_card", text="Hello World (2)!")
+print "%s :" % (card.get("id")), card
+```
+
+#### Delete a card :
+
+Deletes a timeline item.
+
+```python
+user.timeline.delete("id_of_the_card")
+```
