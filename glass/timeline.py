@@ -68,11 +68,6 @@ class Timeline(object):
         :param text: text content for the card
         :param html : html content for the card
         """
-        if self.user.emulator:
-            self.app.emulator_service.post_card(kwargs)
-            return None
-        
-        # Not emulator
         r = self.user.session.post("/mirror/v1/timeline", data=json.dumps(kwargs))
         card = r.json()
         
@@ -90,4 +85,5 @@ class Timeline(object):
         with open(path, "r") as templatefile:
             template = Template(templatefile.read())
             output = template.render(**kwargs)
+            print output
             return self.post(html=output)

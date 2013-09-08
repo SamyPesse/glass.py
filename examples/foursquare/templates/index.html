@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Foursquare + Glass (Unofficial)</title>
+        <link rel="stylesheet" href="/static/style.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body>
+    	{% if not auth %}
+			<h1>Foursquare + Google Glass</h1>
+        	<a href="/glass/oauth/authorize">Install it</a>
+		{% else %}
+			<h1>Thank you for installing this application!</h1>
+		{% endif %}  
+    </body>
+</html>

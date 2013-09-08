@@ -22,19 +22,19 @@ I started this project for testing development of applications for Glass using M
 
 Clone this repository :
 
-	git clone https://github.com/SamyPesse/glass.py.git
+    git clone https://github.com/SamyPesse/glass.py.git
 
 Install dependencies :
 
-	pip install -r requirements.txt
+    pip install -r requirements.txt
 
 Install the library (maybe need to be sudo) :
 
-	pip install .
+    pip install .
 
 ## Test an Hello World with the emulator
 
-	python examples/hello.py
+    python examples/hello.py
 
 ## Example Usage
 
@@ -48,14 +48,14 @@ A simple helloworld which display a message when the user connect the applicatio
 import glass
 
 app = glass.Application(
-	name="hello",
-	client_id="",
-	client_secret="")
+    name="hello",
+    client_id="",
+    client_secret="")
 
 @app.subscriptions.login
 def login(user):
-	print "user : %s" % user.token
-	user.timeline.post(text="Hello World!")
+    print "user : %s" % user.token
+    user.timeline.post(text="Hello World!")
 
 if __name__ == '__main__':
     app.run(port=8080)
@@ -113,8 +113,8 @@ Subscribe to an action "REPLY" :
 ```python
 @app.subscriptions.action("REPLY")
 def reply(user):
-	print "User %s reply" % user.token
-	user.timeline.post(text="Thank you!")
+    print "User %s reply" % user.token
+    user.timeline.post(text="Thank you!")
 ```
 
 A new location is available for the current user, At this time, location notifications are sent every 10 minutes :
@@ -122,8 +122,8 @@ A new location is available for the current user, At this time, location notific
 ```python
 @app.subscriptions.location
 def change_location(user):
-	print "User %s change location" % user.token
-	user.timeline.post(text="You move !")
+    print "User %s change location" % user.token
+    user.timeline.post(text="You move !")
 ```
 
 Access the user last known location using :
@@ -131,15 +131,15 @@ Access the user last known location using :
 ```python
 @app.subscriptions.location
 def change_location(user):
-	# Get last known location
-	location = user.location()
+    # Get last known location
+    location = user.location()
 
-	# Post card with location infos
-	user.timeline.post(text="You move to (Lat: %s, Long: %s) (Accuracy: %s meters)" % (
-		location.get('latitude'),
-		location.get('longitude'),
-		location.get('accuracy')
-	))
+    # Post card with location infos
+    user.timeline.post(text="You move to (Lat: %s, Long: %s) (Accuracy: %s meters)" % (
+        location.get('latitude'),
+        location.get('longitude'),
+        location.get('accuracy')
+    ))
 ```
 
 #### Get user informations
@@ -156,10 +156,10 @@ Get last known user location :
 ```python
 location = user.location()
 print "User is at (Lat: %s, Long: %s) (Accuracy: %s meters)" % (
-		location.get('latitude'),
-		location.get('longitude'),
-		location.get('accuracy')
-	)
+        location.get('latitude'),
+        location.get('longitude'),
+        location.get('accuracy')
+    )
 ```
 
 #### Managing user contacts
@@ -175,7 +175,7 @@ Retrieves a list of contacts for the authenticated user :
 ```python
 contacts = user.contacts.list()
 for contact in contacts:
-	print "%s : %s" % (contact.get("id"), contact.get("displayName"))
+    print "%s : %s" % (contact.get("id"), contact.get("displayName"))
 ```
 
 Gets a single contact item by ID.
@@ -205,7 +205,7 @@ Retrieves a list of timeline items for the authenticated user.
 ```python
 cards = user.timeline.list()
 for card in cards:
-	print "%s :" % (card.get("id")), card
+    print "%s :" % (card.get("id")), card
 ```
 
 Gets a single timeline item by ID.
@@ -235,5 +235,5 @@ You can access the flask applciation for adding views (like index, about pages, 
 ```python
 @app.web.route("/")
 def index():
-	return "Welcome on my Glass Application website !"
+    return "Welcome on my Glass Application website !"
 ```

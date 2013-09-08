@@ -6,48 +6,45 @@ import os
 
 # Local imports
 from user import User
-from emulator import Emulator
 from subscriptions import Subscriptions
 
-class Application(object):
-    OAUTH_ACCESS_TOKEN_URL = "https://accounts.google.com/o/oauth2/token"
-    OAUTH_AUTHORIZE_URL = "https://accounts.google.com/o/oauth2/auth"
-    OAUTH_REDIRECT_URI = "authentification/google"
-    OAUTH_API_BASE_URL = "https://www.googleapis.com/"
-    OAUTH_SCOPES = [
-        'https://www.googleapis.com/auth/glass.location',
-        'https://www.googleapis.com/auth/glass.timeline',
-        'https://www.googleapis.com/auth/userinfo.profile',
-        'https://www.googleapis.com/auth/userinfo.email'
-    ]
+OAUTH_ACCESS_TOKEN_URL = "https://accounts.google.com/o/oauth2/token"
+OAUTH_AUTHORIZE_URL = "https://accounts.google.com/o/oauth2/auth"
+OAUTH_REDIRECT_URI = "authentification/google"
+OAUTH_API_BASE_URL = "https://www.googleapis.com/"
+OAUTH_SCOPES = [
+    'https://www.googleapis.com/auth/glass.location',
+    'https://www.googleapis.com/auth/glass.timeline',
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/userinfo.email'
+]
 
+class Application(object):
     def __init__(self, 
                 name="",
                 client_id=None,
                 client_secret=None,
-                emulator=False,
+                scopes=OAUTH_SCOPES,
                 debug=True,
-                template_folder='templates'):
+                template_folder='templates',
+                **flaskargs):
         self.name = name
-        self.emulator = emulator
         self.debug = debug
-        self.web = flask.Flask(self.name,
-            static_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'emulator'),
-            static_url_path='/emulator')
+        self.web = flask.Flask(self.name, **flaskargs)
         self.template_folder = template_folder
         self.logger = self.web.logger
-        self.emulator_service = Emulator(app=self)
+        self.scopes = scopes
         self.subscriptions = Subscriptions(app=self)
         self.oauth = rauth.OAuth2Service(name=self.name,
                                   client_id=client_id,
                                   client_secret=client_secret,
-                                  access_token_url=self.OAUTH_ACCESS_TOKEN_URL,
-                                  authorize_url=self.OAUTH_AUTHORIZE_URL,
-                                  base_url=self.OAUTH_API_BASE_URL)
+                                  access_token_url=OAUTH_ACCESS_TOKEN_URL,
+                                  authorize_url=OAUTH_AUTHORIZE_URL,
+                                  base_url=OAUTH_API_BASE_URL)
 
     @property
     def oauth_redirect_uri(self):
-        return "%s/glass/oauth/callback" % (self.host)
+        return "%s://%s/glass/oauth/callback" % ("https" if self.secure else "http", self.host)
 
     def _oauth_authorize(self):
         """
@@ -55,7 +52,7 @@ class Application(object):
         """
         params = {
             'approval_prompt': 'force',
-            'scope': " ".join(self.OAUTH_SCOPES),
+            'scope': " ".join(self.scopes),
             'state': '/profile',
             'redirect_uri': self.oauth_redirect_uri,
             'response_type': 'code'
@@ -78,19 +75,16 @@ class Application(object):
         self.subscriptions.init_user(user)
 
         # Call endpoint for user login
-        self.subscriptions.call_endpoint("login", user)
+        return self.subscriptions.call_endpoint("login", user)
 
-        return token
-
-    def run(self, host="http://localhost", port=8080, debug=None):
+    def run(self, host="localhost", port=8080, debug=None, secure=False, public=False):
         """
         Start the application server
         """
-        if self.emulator:
-            self.emulator_service.run()
-
         self.port = port
         self.host = host
+        self.secure = secure
+
         if port != 80:
             self.host = "%s:%i" % (self.host, self.port)
 
@@ -101,6 +95,6 @@ class Application(object):
         self.web.debug = debug or self.debug
 
         # Run webserver
-        self.web.run(port=self.port)
+        self.web.run(port=self.port, host=("0.0.0.0" if public else "127.0.0.1"))
 
 

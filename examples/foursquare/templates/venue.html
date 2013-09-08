@@ -1,0 +1,13 @@
+<article>
+  <figure>
+    <img src="glass://map?w=240&h=360&marker=0;{{ llat }},
+      {{ llong }}&marker=1;{{ venue["location"].get("lat", 0) }},{{ venue["location"].get("lng", 0) }}"
+      height="360" width="240">
+  </figure>
+  <section>
+    <div class="text-auto-size">
+      <p class="yellow">{{ venue["name"] }}</p>
+      <p>{{ venue.get("description", "No description") }}</p>
+    </div>
+  </section>
+</article>

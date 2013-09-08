@@ -20,10 +20,6 @@ class User(object):
         self.timeline = Timeline(self)
         self.contacts = Contacts(self)
 
-    @property
-    def emulator(self):
-        return self.token == "emulator"
-
     def profile(self):
         """
         Return profile informations about this user

@@ -78,21 +78,20 @@ class Subscriptions(object):
         :param endpoint: the endpoint name (ex: "login")
         :param *args, **kwargs: params for the callback
         """
+        back = None
+
         if not endpoint in self.endpoints:
-            return 0
+            return back
+
         self.app.logger.debug("Call endpoint %s" % endpoint)
         for callback in self.endpoints[endpoint]:
-            callback(*args, **kwargs)
-        return len(self.endpoints)
+            back = callback(*args, **kwargs)
+        return back
 
     def init_user(self, user):
         """
         Connect to the user notifications using registred subscriptions
         """
-        if user.emulator:
-            return False
-
-        # No emulator
         userUniqueId = [k for k, v in self.tokens.iteritems() if v == user.token]
         if len(userUniqueId) == 0:
             userUniqueId = str(uuid4())

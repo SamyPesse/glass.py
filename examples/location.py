@@ -5,16 +5,16 @@ import glass
 import configs
 
 app = glass.Application(
-	name="Hello",
-	client_id=configs.CLIENT_ID,
-	client_secret=configs.CLIENT_SECRET
+    name="Hello",
+    client_id=configs.CLIENT_ID,
+    client_secret=configs.CLIENT_SECRET
 )
 
 @app.subscriptions.login
 def login(user):
-	profile = user.profile()
-	print "user : %s" % profile.get("given_name")
-	user.timeline.post(text="Hello %s!" % profile.get("given_name"))
+    profile = user.profile()
+    print "user : %s" % profile.get("given_name")
+    user.timeline.post(text="Hello %s!" % profile.get("given_name"))
 
 @app.subscriptions.location
 def change_location(user):
@@ -30,4 +30,4 @@ def change_location(user):
 
 if __name__ == '__main__':
     app.run(port=8080)
-	
+    
