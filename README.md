@@ -39,6 +39,7 @@ Install the library (maybe need to be sudo) :
 ## Example Usage
 
 Full examples available at [master/examples](https://github.com/SamyPesse/glass.py/tree/master/examples).
+Complete example of a Foursquare application available at [master/examples/foursquare](https://github.com/SamyPesse/glass.py/tree/master/examples/foursquare).
 
 #### Get started
 
