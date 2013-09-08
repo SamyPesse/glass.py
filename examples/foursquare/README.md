@@ -1,6 +1,9 @@
 Complete Example: Unofficial Foursquare App for Google Glass
 ========
 
+[![Code Now](https://friendco.de/widgets/image/codenow?url=https%3A%2F%2Fgithub.com%2FSamyPesse%2Fglass.py.git)](https://friendco.de/widgets/url/codenow?url=https%3A%2F%2Fgithub.com%2FSamyPesse%2Fglass.py.git)
+
+
 This example is a very simple foursquare application for Google Glass (unofficial, I'm not related to Foursquare). The goal is to display, whenever the user location change, a card with the best place around him and action to check in it.
 The code is only 100 lines but for the moment it only display the best place around him (no check in action).
 
