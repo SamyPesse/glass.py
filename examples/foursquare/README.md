@@ -19,9 +19,11 @@ Run the application :
 ## Screens
 
 The homepage of the application :
+
 [![Screen](https://raw.github.com/SamyPesse/glass.py/master/examples/foursquare/screens/web.png)](https://raw.github.com/SamyPesse/glass.py/master/examples/foursquare/screens/web.png)
 
 The card in the Google Glass :
+
 [![Screen](https://raw.github.com/SamyPesse/glass.py/master/examples/foursquare/screens/glass.png)](https://raw.github.com/SamyPesse/glass.py/master/examples/foursquare/screens/glass.png)
 
 ## Code Explained
