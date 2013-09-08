@@ -36,9 +36,9 @@ class Timeline(object):
         r = self.user.session.delete("/mirror/v1/timeline/%s" % (cardid))
         r.raise_for_status()
 
-    def patch(self, cardid,**kwargs):
+    def patch(self, cardid, **kwargs):
         """
-        Delete a card from the timeline
+        Patch a card in the timeline
         ref: https://developers.google.com/glass/v1/reference/timeline/get
         """
         r = self.user.session.patch("/mirror/v1/timeline/%s" % (cardid), data=json.dumps(kwargs))

@@ -1,5 +1,6 @@
 # Local imports
 from timeline import Timeline
+from contacts import Contacts
 
 class User(object):
     """
@@ -12,9 +13,12 @@ class User(object):
     def __init__(self, app=None, token=None):
         self.app = app
         self.token = token
+        
         self.session = self.app.oauth.get_session(token=self.token)
         self.session.headers.update({'Content-Type': 'application/json'})
+
         self.timeline = Timeline(self)
+        self.contacts = Contacts(self)
 
     @property
     def emulator(self):

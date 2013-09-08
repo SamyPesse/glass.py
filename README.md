@@ -162,6 +162,42 @@ print "User is at (Lat: %s, Long: %s) (Accuracy: %s meters)" % (
 	)
 ```
 
+#### Managing user contacts
+
+Inserts a new contact for the authenticated user :
+
+```python
+user.contacts.insert(displayName="John Doe", id="johndoe", imageUrls=["http://.....png"])
+```
+
+Retrieves a list of contacts for the authenticated user :
+
+```python
+contacts = user.contacts.list()
+for contact in contacts:
+	print "%s : %s" % (contact.get("id"), contact.get("displayName"))
+```
+
+Gets a single contact item by ID.
+
+```python
+card = user.contacts.get("id_of_the_contact")
+print "%s : %s" % (contact.get("id"), contact.get("displayName"))
+```
+
+Updates a contact in place. This method supports patch semantics.
+
+```python
+contact = user.contacts.patch("id_of_the_contact", text="Hello World (2)!")
+print "%s : %s" % (contact.get("id"), contact.get("displayName"))
+```
+
+Deletes a contact.
+
+```python
+user.contacts.delete("id_of_the_contact")
+```
+
 #### Accessing the Flask web server
 
 You can access the flask applciation for adding views (like index, about pages, ...) using :
@@ -172,9 +208,9 @@ def index():
 	return "Welcome on my Glass Application website !"
 ```
 
-## More features :
+## More features
 
-#### Listing card in timeline :
+#### Advanced tieline gestion
 
 Retrieves a list of timeline items for the authenticated user.
 
@@ -184,8 +220,6 @@ for card in cards:
 	print "%s :" % (card.get("id")), card
 ```
 
-#### Get a card by Id :
-
 Gets a single timeline item by ID.
 
 ```python
@@ -193,16 +227,12 @@ card = user.timeline.get("id_of_the_card")
 print "%s :" % (card.get("id")), card
 ```
 
-#### Update a card :
-
 Updates a timeline item in place. This method supports patch semantics.
 
 ```python
 card = user.timeline.patch("id_of_the_card", text="Hello World (2)!")
 print "%s :" % (card.get("id")), card
 ```
-
-#### Delete a card :
 
 Deletes a timeline item.
 
