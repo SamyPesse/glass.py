@@ -1,0 +1,13 @@
+application: insthu
+version: production
+runtime: python27
+api_version: 1
+threadsafe: no
+
+handlers:
+- url: /.*
+  script: main.app.web
+
+libraries:
+- name: jinja2
+  version: latest

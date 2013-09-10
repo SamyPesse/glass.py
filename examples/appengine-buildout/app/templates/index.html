@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Google App Engine + Buildout + Glass</title>
+        <link rel="stylesheet" href="/static/style.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body>
+        <h1>Google App Engine + Buildout + Google Glass</h1>
+        {% if not configured %}
+            <p>appname, client_id, and client_secret must be set in <span style="font-family: monospace">config.py</span>
+            before this example will work. Please configure =D</p>
+        {% else %}
+            {% if not user %}
+                <a href="/glass/oauth/authorize">Install it</a>
+            {% else %}
+                <p>{{ user.profile().get("given_name") }}, thank you for installing this application!</p>
+            {% endif %}
+        {% endif %}
+    </body>
+</html>
