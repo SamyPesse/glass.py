@@ -51,11 +51,12 @@ class Application(object):
         (view) Display the authorization window for Google Glass
         """
         params = {
-            'approval_prompt': 'force',
             'scope': " ".join(self.scopes),
             'state': '/profile',
             'redirect_uri': self.oauth_redirect_uri,
-            'response_type': 'code'
+            'response_type': 'code',
+            'access_type': 'offline',
+            'approval_prompt': 'force'
         }
         url = self.oauth.get_authorize_url(**params)
         return flask.redirect(url)
@@ -64,12 +65,12 @@ class Application(object):
         """
         (view) Callback for the oauth
         """
-        token = self.oauth.get_access_token(data={
+        tokens = self.oauth.get_raw_access_token(data={
             'code': flask.request.args.get('code', ''),
             'redirect_uri': self.oauth_redirect_uri,
             'grant_type': 'authorization_code'
-        }, decoder=json.loads)
-        user = User(token=token, app=self)
+        }).json()
+        user = User(tokens=tokens, app=self)
 
         # Add subscriptions
         self.subscriptions.init_user(user)

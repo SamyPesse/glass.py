@@ -2,6 +2,9 @@
 import os
 import json
 
+# Local imports
+import exceptions
+
 class Contacts(object):
     """
     Represent contacts for a user
@@ -16,11 +19,11 @@ class Contacts(object):
         Get a contact
         ref: https://developers.google.com/glass/v1/reference/contacts/get
         """
-        r = self.user.session.get("/mirror/v1/contacts/%s" % (contactid))
+        r = self.user.request("GET", "/mirror/v1/contacts/%s" % (contactid))
         contact = r.json()
         
         if (contact is None or not "id" in contact):
-            raise Exception("Error getting contact ", contact)
+            raise exceptions.ContactException("Error getting contact ", contact)
         return contact
 
     def delete(self, contactid):
@@ -28,19 +31,18 @@ class Contacts(object):
         Delete a contact
         ref: https://developers.google.com/glass/v1/reference/contacts/delete
         """
-        r = self.user.session.delete("/mirror/v1/contacts/%s" % (contactid))
-        r.raise_for_status()
+        r = self.user.request("DELETE", "/mirror/v1/contacts/%s" % (contactid))
 
     def patch(self, contactid, **kwargs):
         """
         Patch a contact
         ref: https://developers.google.com/glass/v1/reference/contacts/patch
         """
-        r = self.user.session.patch("/mirror/v1/contacts/%s" % (contactid), data=json.dumps(kwargs))
+        r = self.user.request("PATCH", "/mirror/v1/contacts/%s" % (contactid), data=json.dumps(kwargs))
         contact = r.json()
         
         if (contact is None or not "id" in contact):
-            raise Exception("Error patching contact ", contact)
+            raise exceptions.ContactException("Error patching contact ", contact)
         return contact
 
     def list(self, **kwargs):
@@ -48,11 +50,11 @@ class Contacts(object):
         List contacts
         ref: https://developers.google.com/glass/v1/reference/contacts/list
         """
-        r = self.user.session.get("/mirror/v1/contacts", data=kwargs)
+        r = self.user.request("GET", "/mirror/v1/contacts", data=kwargs)
         contacts = r.json()
         
         if (contacts is None or not "items" in contacts):
-            raise Exception("Error listing contacts ", contacts)
+            raise exceptions.ContactException("Error listing contacts ", contacts)
         return contacts["items"]
 
     def insert(self, **kwargs):
@@ -60,9 +62,9 @@ class Contacts(object):
         Insert a new contact
         ref: https://developers.google.com/glass/v1/reference/contacts/insert
         """
-        r = self.user.session.post("/mirror/v1/contacts", data=json.dumps(kwargs))
+        r = self.user.request("POST", "/mirror/v1/contacts", data=json.dumps(kwargs))
         contact = r.json()
         
         if (contact is None or not "id" in contact):
-            raise Exception("Error inserting contact", contact)
+            raise exceptions.ContactException("Error inserting contact", contact)
         return contact

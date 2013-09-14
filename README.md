@@ -238,3 +238,34 @@ You can access the flask applciation for adding views (like index, about pages, 
 def index():
     return "Welcome on my Glass Application website !"
 ```
+
+#### Store users in a database
+
+If you are application need to store glass user credentials for use in the future :
+
+```python
+tokens = user.tokens
+# tokens is dict with "access_token" and "refersh_token" to store in your user object in the database
+```
+
+#### Handle offline access and refresh tokens 
+
+glass.py let you manage in a simple way the offline access and refresh tokens, when an **glass.exceptions.RefreshTokenException** is raised :
+
+```python
+try:
+    # Try to get user profile
+    profile = user.profile()
+except glass.exceptions.RefreshTokenException, e:
+    # Access token is no longer valid : refresh token
+    new_tokens = user.refresh_token()
+
+    # And Store in the database the new acess token (new_tokens["access_token"])
+```
+
+Build a glass user from these stored tokens :
+
+```python
+# get the tokens dict from your database
+user = glass.User(app=app, tokens=tokens)
+```

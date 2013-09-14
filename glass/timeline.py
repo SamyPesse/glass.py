@@ -3,6 +3,9 @@ import os
 import json
 from jinja2 import Template
 
+# Local imports
+import exceptions
+
 class Timeline(object):
     """
     Represent an user timeline
@@ -21,11 +24,11 @@ class Timeline(object):
         Get a card from the timeline
         ref: https://developers.google.com/glass/v1/reference/timeline/get
         """
-        r = self.user.session.get("/mirror/v1/timeline/%s" % (cardid))
+        r = self.user.request("GET", "/mirror/v1/timeline/%s" % (cardid))
         card = r.json()
         
         if (card is None or not "id" in card):
-            raise Exception("Error getting card from timeline ", card)
+            raise exceptions.TimelineException("Error getting card from timeline ", card)
         return card
 
     def delete(self, cardid):
@@ -33,19 +36,18 @@ class Timeline(object):
         Delete a card from the timeline
         ref: https://developers.google.com/glass/v1/reference/timeline/get
         """
-        r = self.user.session.delete("/mirror/v1/timeline/%s" % (cardid))
-        r.raise_for_status()
+        r = self.user.request("DELETE", "/mirror/v1/timeline/%s" % (cardid))
 
     def patch(self, cardid, **kwargs):
         """
         Patch a card in the timeline
         ref: https://developers.google.com/glass/v1/reference/timeline/get
         """
-        r = self.user.session.patch("/mirror/v1/timeline/%s" % (cardid), data=json.dumps(kwargs))
+        r = self.user.request("PATCH", "/mirror/v1/timeline/%s" % (cardid), data=json.dumps(kwargs))
         card = r.json()
         
         if (card is None or not "id" in card):
-            raise Exception("Error patching card in timeline ", card)
+            raise exceptions.TimelineException("Error patching card in timeline ", card)
         return card
 
     def list(self, **kwargs):
@@ -53,11 +55,11 @@ class Timeline(object):
         List cards in the timeline
         ref: https://developers.google.com/glass/v1/reference/timeline/list
         """
-        r = self.user.session.get("/mirror/v1/timeline", data=kwargs)
+        r = self.user.request("GET", "/mirror/v1/timeline", data=kwargs)
         cards = r.json()
         
         if (cards is None or not "items" in cards):
-            raise Exception("Error listing cards in timeline ", cards)
+            raise exceptions.TimelineException("Error listing cards in timeline ", cards)
         return cards["items"]
 
     def post(self, **kwargs):
@@ -68,11 +70,11 @@ class Timeline(object):
         :param text: text content for the card
         :param html : html content for the card
         """
-        r = self.user.session.post("/mirror/v1/timeline", data=json.dumps(kwargs))
+        r = self.user.request("POST", "/mirror/v1/timeline", data=json.dumps(kwargs))
         card = r.json()
         
         if (card is None or not "id" in card):
-            raise Exception("Error posting card to timeline ", card)
+            raise exceptions.TimelineException("Error posting card to timeline ", card)
         return card
 
     def post_template(self, template, **kwargs):

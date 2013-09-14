@@ -5,6 +5,7 @@ import flask
 from uuid import uuid4
 
 # Local imports
+import exceptions
 from user import User
 
 
@@ -17,7 +18,7 @@ class Subscriptions(object):
         self.app = app
         self.subscriptions = {} # Map of subscriptions to send to google api
         self.endpoints = {}    # map of endpoint -> callback function
-        self.tokens = {} # map of userToken -> access token
+        self.tokens = {} # map of userToken -> tokens dict
 
     def add_subscription(self, collection, operations=[]):
         """
@@ -49,7 +50,7 @@ class Subscriptions(object):
             userid = data["userToken"]
             if not userid in self.tokens:
                 raise Exception("Callback for a non-existant user")
-            user = User(app=self.app, token=self.tokens[userid])
+            user = User(app=self.app, tokens=self.tokens[userid])
             if data["collection"] == "timeline":
                 for action in data["actions"]:
                     self.call_endpoint("action."+action["type"], user)
@@ -100,19 +101,19 @@ class Subscriptions(object):
                 return self.subscribe_user(user)
 
         # Set user token to the map
-        self.tokens[userUniqueId] = user.token
+        self.tokens[userUniqueId] = user.tokens
 
         # Subscribe
         for sid, subscription in self.subscriptions.items():
             callback_url = "%s/glass/callback/%s" % (self.app.host, subscription["id"])
-            result = user.session.post("/mirror/v1/subscriptions", data=json.dumps({
+            result = user.request("POST", "/mirror/v1/subscriptions", data=json.dumps({
                 "collection": subscription["collection"],
                 "userToken": userUniqueId,
                 "operation": subscription["operations"],
                 "callbackUrl": callback_url
             })).json()
             if (result is None or not "id" in result):
-                raise Exception("Error posting subscription ", result)
+                raise exceptions.SubscriptionException("Error posting subscription ", result)
         return True
 
     def login(self, f):
