@@ -248,9 +248,16 @@ tokens = user.tokens
 # tokens is dict with "access_token" and "refersh_token" to store in your user object in the database
 ```
 
+Later, initialize a glass user from these stored tokens :
+
+```python
+# get the tokens dict from your database
+user = glass.User(app=app, tokens=tokens)
+```
+
 #### Handle offline access and refresh tokens 
 
-glass.py let you manage in a simple way the offline access and refresh tokens, when an **glass.exceptions.RefreshTokenException** is raised :
+glass.py let you manage in a simple way the offline access and refresh tokens, when an *glass.exceptions.RefreshTokenException* is raised :
 
 ```python
 try:
@@ -263,9 +270,3 @@ except glass.exceptions.RefreshTokenException, e:
     # And Store in the database the new acess token (new_tokens["access_token"])
 ```
 
-Build a glass user from these stored tokens :
-
-```python
-# get the tokens dict from your database
-user = glass.User(app=app, tokens=tokens)
-```
