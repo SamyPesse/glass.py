@@ -1,8 +1,6 @@
 glass.py
 ========
 
-[![Code Now](https://friendco.de/widgets/image/codenow?url=https%3A%2F%2Fgithub.com%2FSamyPesse%2Fglass.py.git)](https://friendco.de/widgets/url/codenow?url=https%3A%2F%2Fgithub.com%2FSamyPesse%2Fglass.py.git)
-
 A simple but powerful library for building and testing Google Glass applications in Python using Mirror API.
 
 Glass.py uses Flask, Requests and Rauth.
